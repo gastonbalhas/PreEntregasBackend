@@ -8,13 +8,24 @@ class ProductManager {
   addProduct(product) {
     const products = this.getProductsFromFile();
 
-    if (!product.title || !product.description || !product.price || !product.code || product.stock === undefined) {
+    if (!product.title || !product.description || !product.price || !product.code || product.stock === undefined || !product.category || product.status === undefined) {
       console.log("Error: Todos los campos son obligatorios.");
       return;
     }
 
     if (products.some(existingProduct => existingProduct.code === product.code)) {
       console.log("Error: El código del producto ya existe. Debe ser único.");
+      return;
+    }
+
+    // Validación para el campo 'category' y 'status'
+    if (!['Electronics', 'Clothing', 'Food', 'Books'].includes(product.category)) {
+      console.log("Error: La categoría del producto es inválida.");
+      return;
+    }
+
+    if (typeof product.status !== 'boolean') {
+      console.log("Error: El estado del producto debe ser un booleano.");
       return;
     }
 
